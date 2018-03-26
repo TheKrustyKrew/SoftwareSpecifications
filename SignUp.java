@@ -1,13 +1,16 @@
-package com.example.android.softwarespecifications;
+package com.example.tsnydej.myapplication;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class SignUp extends AppCompatActivity {
+/**
+ * Created by TSNYDEJ on 3/25/2018.
+ */
+
+public class SignUp {
     DatabaseHelper helper = new DatabaseHelper(this);
 
     @Override
@@ -33,6 +36,8 @@ public class SignUp extends AppCompatActivity {
                 c.setName(namestr);
                 c.setUsername(usernamestr);
                 c.setPassword(pass1str);
+
+                helper.insertContact(c);
             }
             else{
                 Toast pass = Toast.makeText(SignUp.this, "Passwords do not match", Toast.LENGTH_SHORT);
