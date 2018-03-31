@@ -10,8 +10,10 @@ import android.graphics.BitmapFactory;
  */
 
 public class DataRetrival {
+    private static final String TABLE_NAME = "Journal Info";
+    private static final String TABLE_CREATE = "create table Journal Info ("
+
     public Bitmap getImage(Integer id){
-        SQLiteDatabase db = this.getWritableDatabase();
         Bitmap bt = null;
         Cursor cursor = db.rawQuery("select * from images where id=?", new String[]{String.valueOf(id)});
         if(cursor.moveToNext()){
@@ -19,5 +21,13 @@ public class DataRetrival {
             bt = BitmapFactory.decodeByteArray(imag, 0, imag.length);
         }
         return bt;
+    }
+
+    public void insertJournalEntry(){
+
+    }
+
+    public Cursor getInformation(SQLiteDatabase db){
+        String[] projection = {};
     }
 }
