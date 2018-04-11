@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import static com.example.android.softwarespecifications.MainActivity.helper;
 
 import java.io.BufferedReader;
+import java.net.MalformedURLException;
 
 public static String month = "";
 public static String day = "";
@@ -124,6 +125,21 @@ public class CreateEntry extends AppCompatActivity {
     			date = currentDate;
     		}
     		
+    	}
+    	catch(MalformedURLException e) {
+    		e.printStackTrace();
+    		Toast error = Toast.makeText(CreateEntry.this, 
+    				"An error has occured", Toast.LENGTH_SHORT);
+    	}
+    	catch(IOException e) {
+    		e.printStackTrace();
+    		Toast error = Toast.makeText(CreateEntry.this, 
+    				"An error has occured", Toast.LENGTH_SHORT);
+    	}
+    	catch(JSONException e) {
+    		e.printStackTrace();
+    		Toast error = Toast.makeText(CreateEntry.this, 
+    				"An error has occured", Toast.LENGTH_SHORT);
     	}
     }
 }
