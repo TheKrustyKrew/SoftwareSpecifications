@@ -36,7 +36,7 @@ public class journalDb {
 		}
 		
 		public void retrieveJournalEntry() {
-			SQLiteDatabase db = db.getReadableDatabase();
+			db = db.getReadableDatabase();
 			
 			String[] projection = {
 					USERNAME,
@@ -64,10 +64,21 @@ public class journalDb {
 	}
 	
 	public void deleteJournal() {
+		String selection = JOURNAL_SELECTED + " LIKE ?";
+		String [] selectionArgs = {};
 		
+		int deleted = db.delete(TABLE_NAME, selection, selectionArgs);
 	}
 	
 	public void editJournalEntry() {
+		db = db.getWritableDatabase();
 		
+		ContentValues values = new ContentValues();
+		values.put(JOURNAL_SELECTED + " LIKE ?");
+		
+		String selection = JOURNAL_SELECTED + " LIKE ?";
+		String selectionArgs = {};
+		
+		int count = db.update(TABLE_NAME, values, selection, selectionArgs);
 	}
 }
