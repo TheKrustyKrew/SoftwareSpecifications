@@ -7,17 +7,22 @@ public class journalDb {
 	private static final String MONTH_COLUMN = "Month";
 	private static final String DATE_COLUMN = "Date";
 	private static final String YEAR_COLUMN = "Year";
+	private static final String X_VALUE_COLUMN = "X-Coordinate";
+	private static final String Y_VALUE_COLUMN = "Y-Coordinate";
+	private static final String LENGTH_COLUMN = "Length";
 	private static final String SPECIES_COLUMN = "Species";
 	private static final String BAIT_COLUMN = "Bait";
 	private static final String WIND_VALUE_COLUMN = "Wind";
 	private static final String TIDE_VALUE_COLUMN = "Tide";
 	private static final String NOTES_COLUMN = "Notes";
+	static String JOURNAL_SELECTED; 
 			
 	private static final String TABLE_CREATE =
-			"CREATE TABLE" + TABLE_NAME + "(" + USERNAME_COLUMN
-			+ " TEXT PRIMARY KEY," + MONTH_COLUMN + " TEXT," + DATE_COLUMN + " TEXT," +
-			YEAR_COLUMN + " TEXT," + SPECIES_COLUMN + " TEXT," + BAIT_COLUMN + " TEXT," + 
-			WIND_VALUE_COLUMN + " TEXT," + NOTES_COLUMN + " TEXT)";
+			"CREATE TABLE " + TABLE_NAME + "(" + USERNAME_COLUMN + " TEXT PRIMARY KEY NOT NULL," 
+			+ MONTH_COLUMN + " TEXT," + DATE_COLUMN + " TEXT," + YEAR_COLUMN + " TEXT," 
+			+ X_VALUE_COLUMN + " REAL," + Y_VALUE_COLUMN + " REAL," + LENGTH_COLUMN + " REAL," 
+			+ SPECIES_COLUMN + " TEXT," + BAIT_COLUMN + " TEXT," + WIND_VALUE_COLUMN + " TEXT," +  TIDE_VALUE_COLUMN + " Text," 
+			+ NOTES_COLUMN + " TEXT)";
 	
 	private static final String DELETE_ENTRIES = "DROP TABLE IF EXISTS" + TABLE_NAME;
 	
@@ -26,46 +31,62 @@ public class journalDb {
 		SQLiteDatabase db = db.getWritableDatabase();
 		
 		ContentValues values = new ContentValues();
-		values.put(MONTH_COLUMN, month);
-		values.put(YEAR_COLUMN, year);
-		values.put(SPECIES_COLUMN, species);
-		values.put(NOTES_COLUMN, text);
+		values.put(USERNAME_COLUMN, CreateEntry.loggedinuser);
+		values.put(MONTH_COLUMN, CreateEntry.monthValue);
+		values.put(DATE_COLUMN, CreateEntry.dateValue);
+		values.put(YEAR_COLUMN, CreateEntry.yearValue);
+		values.put(X_VALUE_COLUMN, CreateEntry.xcoValue);
+		values.put(Y_VALUE_COLUMN, CreateEntry.ycoValue);
+		values.put(LENGTH_COLUMN, CreateEntry.lengthValue);
+		values.put(SPECIES_COLUMN, CreateEntry.speciesValue);
+		values.put(BAIT_COLUMN, CreateEntry.baitValue);
+		values.put(WIND_VALUE_COLUMN, CreateEntry.windValue);
+		values.put(TIDE_VALUE_COLUMN, CreateEntry.tideValue);
+		values.put(NOTES_COLUMN, CreateEntry.narrativeValue);
 		
 		long newRowID = db.insert(TABLE_NAME, null, values);
-				
+	}
+	
+	public void retrieveJournalEntry() {
+		db = db.getReadableDatabase();
+		
+		String[] projection = {
+				USERNAME_COLUMN,
+				MONTH_COLUMN,
+				DATE_COLUMN,
+				YEAR_COLUMN,
+				X_VALUE_COLUMN,
+				Y_VALUE_COLUMN,
+				LENGTH_COLUMN,
+				SPECIES_COLUMN,
+				BAIT_COLUMN,
+				WIND_VALUE_COLUMN,
+				TIDE_VALUE_COLUMN,
+				NOTES_COLUMN
+		};
+
+		String selection = searchCriteria + " =?";
+		String[] selectionArgs = {}; 
+		
+		String sortOrder = MONTH_COLUMN + " DESC";
+		
+		Cursor cursor = db.query(
+				TABLE_NAME,
+				projection,
+				selection,
+				selectionArgs,
+				null,
+				null,
+				sortOrder
+				);
+		
 		List itemIds = new ArrayList<>();
 		while(cursor.moveToNext()) {
-			long itemId = cursor.getLong(
-					cursor.getColumnIndexOrThrow(USERNAME));
-			itemIds.add(itemId);
+		  long itemId = cursor.getLong(
+		      cursor.getColumnIndexOrThrow(loggedinuser));
+		  itemIds.add(itemId);
 		}
-		
-		public void retrieveJournalEntry() {
-			db = db.getReadableDatabase();
-			
-			String[] projection = {
-					USERNAME,
-					MONTH_COLUMN,
-					YEAR_COLUMN,
-					SPECIES_COLUMN,
-					NOTES_COLUMN
-			};
-
-			String selection = searchCriteria + " =?";
-			String[] selectionArgs = {}; 
-			
-			String sortOrder = MONTH_COLUMN + " DESC";
-			
-			Cursor cursor = db.query(
-					TABLE_NAME,
-					projection,
-					selection,
-					selectionArgs,
-					null,
-					null,
-					sortOrder
-					);
-		}
+		cursor.close();
 	}
 	
 	public void deleteJournal() {
