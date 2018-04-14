@@ -3,16 +3,21 @@ import java.util.List;
 
 public class journalDb {
 	private static final String TABLE_NAME = "Journal Info";
+	private static final String USERNAME_COLUMN = "Username";
 	private static final String MONTH_COLUMN = "Month";
+	private static final String DATE_COLUMN = "Date";
 	private static final String YEAR_COLUMN = "Year";
 	private static final String SPECIES_COLUMN = "Species";
+	private static final String BAIT_COLUMN = "Bait";
+	private static final String WIND_VALUE_COLUMN = "Wind";
+	private static final String TIDE_VALUE_COLUMN = "Tide";
 	private static final String NOTES_COLUMN = "Notes";
 			
 	private static final String TABLE_CREATE =
 			"CREATE TABLE" + TABLE_NAME + "(" + USERNAME_COLUMN
-			+ " TEXT PRIMARY KEY," + MONTH_COLUMN + " INTEGER," +
-			YEAR_COLUMN + " INTEGER," + SPECIES_COLUMN + " TEXT,"
-			+ NOTES_COLUMN + " TEXT)";
+			+ " TEXT PRIMARY KEY," + MONTH_COLUMN + " TEXT," + DATE_COLUMN + " TEXT," +
+			YEAR_COLUMN + " TEXT," + SPECIES_COLUMN + " TEXT," + BAIT_COLUMN + " TEXT," + 
+			WIND_VALUE_COLUMN + " TEXT," + NOTES_COLUMN + " TEXT)";
 	
 	private static final String DELETE_ENTRIES = "DROP TABLE IF EXISTS" + TABLE_NAME;
 	
