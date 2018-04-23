@@ -1,4 +1,4 @@
-package com.example.android.softwarespecifications;
+package com.example.android.testdatabase;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,10 +7,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 /**
- * Created by rache on 3/14/2018.
+ * Created by rache on 4/23/2018.
  */
 
-public class DatabaseHelper extends SQLiteOpenHelper {
+public class DatabaseHelper extends SQLiteOpenHelper{
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "SoftwareSpecification.db";
     private static final String TABLE_NAME = "Login Info";
@@ -19,8 +19,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_PASSWORD = "Password";
 
     SQLiteDatabase db;
-    private static final String TABLE_CREATE = "create table Login Info (Username text primary key not null " +
-            "auto_increment , Password text not null, Name text not null);";
+    private static final String TABLE_CREATE = "create table " + TABLE_NAME + " (" + COLUMN_USERNAME +
+            " TEXT PRIMARY KEY NOT NULL," + COLUMN_PASSWORD + " TEXT NOT NULL," + COLUMN_NAME + " TEXT NOT NULL)";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -32,37 +32,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         this.db = db;
     }
 
-    public void insertContact(Contact c){
+    public void insertContact(Users user){
         db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(COLUMN_USERNAME, c.getUsername());
-        values.put(COLUMN_PASSWORD, c.getPassword());
-        values.put(COLUMN_NAME, c.getName());
+        values.put(COLUMN_USERNAME, user.getUsername());
+        values.put(COLUMN_PASSWORD, user.getPassword());
+        values.put(COLUMN_NAME, user.getFirstName() + " " + user.getLastName());
 
         db.insert(TABLE_NAME, null, values);
     }
 
-    public String searchPass(String uname){
-        db = this.getReadableDatabase();
-        String query = "select uname, Password from" + TABLE_NAME;
-        Cursor cursor = db.rawQuery(query, null);
-
-        String a,b;
-        b = "Not Found";
-        if(cursor.moveToFirst()){
-            do {
-                a = cursor.getString(0);
-
-                if(a.equals(uname)){
-                    b = cursor.getString(1);
-                    break;
-                }
-            }
-            while(cursor.moveToNext());
-        }
-
-        return b;
-    }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
