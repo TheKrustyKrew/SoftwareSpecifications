@@ -18,7 +18,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     private static final String COLUMN_USERNAME = "Username";
     private static final String COLUMN_PASSWORD = "Password";
 
-    SQLiteDatabase db;
+    static SQLiteDatabase db;
     private static final String TABLE_CREATE = "create table " + TABLE_NAME + " (" + COLUMN_USERNAME +
             " TEXT PRIMARY KEY NOT NULL," + COLUMN_PASSWORD + " TEXT NOT NULL," + COLUMN_NAME + " TEXT NOT NULL)";
 
@@ -41,6 +41,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
         db.insert(TABLE_NAME, null, values);
     }
+
 
 
     @Override
